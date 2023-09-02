@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>@ViewBag.Title</title>
+    <script src="@Url.Content("~/Scripts/script.js")" type="text/javascript"></script>
+    
+@Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler }
+)
+@Html.DevExpress().GetScripts( 
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.Editors },
+        new Script { ExtensionSuite = ExtensionSuite.GridView },
+        new Script { ExtensionSuite = ExtensionSuite.Scheduler }
+)
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    @Html.DevExpress().Splitter(
+       settings => {
+           settings.Name = "MainSplitter";
+           settings.Orientation = System.Web.UI.WebControls.Orientation.Vertical;
+           settings.FullscreenMode = true;
+           settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+           settings.Styles.Pane.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+           settings.Styles.Pane.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+
+           settings.Panes.Add(pane => {
+               pane.Name = "HeaderPane";
+               pane.Size = ASPxWebControl.GlobalTheme == "Moderno" ? 101 : 87;
+               pane.MinSize = ASPxWebControl.GlobalTheme == "Moderno" ? 101 : 87;
+               pane.PaneStyle.BorderBottom.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(1);
+               pane.SetContent(() => {
+                   Html.RenderPartial("HeaderPartialView");
+               });
+           });
+
+           settings.Panes.Add(pane => {
+               pane.Name = "MainPane";
+               pane.PaneStyle.CssClass = "noborder";
+               pane.Separator.Visible = DevExpress.Utils.DefaultBoolean.False;
+               pane.SetContent(RenderBody().ToHtmlString());
+           });
+
+       }).GetHtml()
+</body>
+</html>
